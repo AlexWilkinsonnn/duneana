@@ -1,0 +1,12 @@
+BEGIN_PROLOG
+
+VtxBiasAna:
+{
+  module_type: "VtxBiasAna"
+
+  VertexLabel: "pandora"
+  PfpLabel:    "pandora"
+  TruthLabel:  "generator"
+}
+
+END_PROLOG

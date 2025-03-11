@@ -1,0 +1,33 @@
+#include "services_dune.fcl"
+#include "VtxBiasAnaConfig.fcl"
+
+process_name: vtxbiasana
+
+source:
+{
+  module_type: RootInput
+               maxEvents: -1
+}
+
+services:
+{
+  TFileService: { fileName: "VtxBiasAnaOutput.root" }
+  @table::dunefd_services
+  TimeTracker:           {}
+  MemoryTracker:         {} # default is one
+}
+
+physics:
+{
+  analyzers:
+  {
+    vtxana: @local::VtxBiasAna
+  }
+  path0:     [ vtxana ]
+  end_paths: [ path0 ]
+}
+
+services.Geometry: @local::dune10kt_1x2x6_geo
+services.Geometry.GDML: "dune10kt_v5_refactored_1x2x6.gdml"
+services.Geometry.Name: "dune10kt_v5_1x2x6"
+services.Geometry.ROOT: "dune10kt_v5_refactored_1x2x6.gdml"
