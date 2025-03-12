@@ -28,9 +28,10 @@ export IFDH_CP_UNLINK_ON_ERROR=1
 export IFDH_CP_MAXRETRIES=1
 export IFDH_DEBUG=0
 
-input_fname=$(rucio -a awilkins --csv $RUCIO_CONTAINER | head -n $((PROCESS+1)) | tail -n -1 | sed "s/,.*//")
+setup rucio
+input_fname=$(rucio -a awilkins list-files --csv $RUCIO_CONTAINER | head -n $((PROCESS+1)) | tail -n -1 | sed "s/,.*//")
 input_root_path=$(rucio -a awilkins list-file-replicas --protocols root --pfns $input_fname | grep -v "tape_backed" | head -n 1)
-if [ -z "${VAR}" ];
+if [ -z "$input_root_path" ];
 then
   echo "No staged file anywhere for $input_fname"
 fi
