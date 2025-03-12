@@ -183,9 +183,9 @@ void extrapolation::VtxBiasAna::beginJob()
   art::ServiceHandle<art::TFileService> tfs;
   fTree = tfs->make<TTree>("vtx_tree", "vtx_tree");
 
-  fTree->Branch("true_cos_thetax", &fTrueThetaX);
-  fTree->Branch("true_cos_thetay", &fTrueThetaY);
-  fTree->Branch("true_cos_thetaz", &fTrueThetaZ);
+  fTree->Branch("true_thetax", &fTrueThetaX);
+  fTree->Branch("true_thetay", &fTrueThetaY);
+  fTree->Branch("true_thetaz", &fTrueThetaZ);
   fTree->Branch("true_nu_energy", &fTrueNuE);
   fTree->Branch("true_vtx_x", &fTrueVtxX);
   fTree->Branch("true_vtx_y", &fTrueVtxY);
