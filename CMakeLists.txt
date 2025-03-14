@@ -51,6 +51,7 @@ include(ArtMake)
 include(BuildPlugins)
 
 add_subdirectory(duneana)
+add_subdirectory(fcl)
 add_subdirectory(ups)
 
 include(UseCPack)
