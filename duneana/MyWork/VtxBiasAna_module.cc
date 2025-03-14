@@ -59,6 +59,9 @@ private:
   double fTrueThetaY;
   double fTrueThetaZ;
   double fTrueNuE;
+  double fTrueY;
+  double fTrueCC;
+  double fTrueMode;
   double fTrueVtxX;
   double fTrueVtxY;
   double fTrueVtxZ;
@@ -153,8 +156,11 @@ void extrapolation::VtxBiasAna::analyze(art::Event const& e)
   fTrueVtxY = trueNuParticle.Position().Y();
   fTrueVtxZ = trueNuParticle.Position().Z();
 
-  //-- Get the true neutrino energy
+  //-- Get the true neutrino properties
   fTrueNuE = trueNuParticle.E(); // GeV I assume
+  fTrueY = trueNu.Y();
+  fTrueCC = trueNu.CCNC();
+  fTrueMode = trueNu.Mode();
 
   //-- Get the angles w.r.t detector coordinate unit vectors
   fTrueThetaX = std::acos(trueNuParticle.Px() / trueNuParticle.P());
@@ -187,6 +193,9 @@ void extrapolation::VtxBiasAna::beginJob()
   fTree->Branch("true_thetay", &fTrueThetaY);
   fTree->Branch("true_thetaz", &fTrueThetaZ);
   fTree->Branch("true_nu_energy", &fTrueNuE);
+  fTree->Branch("true_Y", &fTrueY);
+  fTree->Branch("true_CC", &fTrueCC);
+  fTree->Branch("true_mode", &fTrueMode);
   fTree->Branch("true_vtx_x", &fTrueVtxX);
   fTree->Branch("true_vtx_y", &fTrueVtxY);
   fTree->Branch("true_vtx_z", &fTrueVtxZ);
