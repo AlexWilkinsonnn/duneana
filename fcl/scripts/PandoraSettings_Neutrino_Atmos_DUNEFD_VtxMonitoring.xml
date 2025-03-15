@@ -104,6 +104,26 @@
     </algorithm>
     <algorithm type = "LArHitWidthClusterMerging"/>
 
+    <algorithm type = "LArVertexMonitoring">
+      <Visualize>false</Visualize>
+      <WriteFile>true</WriteFile>
+      <CaloHitListName>CaloHitList2D</CaloHitListName>
+      <Filename>PandoraVertexMonitoring.root</Filename>
+      <Treename>vtx_nupass1_early</Treename>
+      <FromList>true</FromList>
+      <VertexListName>NeutrinoVertices3D_Pass1</VertexListName>
+    </algorithm>
+
+    <algorithm type = "LArVertexMonitoring">
+      <Visualize>false</Visualize>
+      <WriteFile>true</WriteFile>
+      <CaloHitListName>CaloHitList2D</CaloHitListName>
+      <Filename>PandoraVertexMonitoring.root</Filename>
+      <Treename>vtx_nu_early</Treename>
+      <FromList>true</FromList>
+      <VertexListName>NeutrinoVertices3D</VertexListName>
+    </algorithm>
+
     <!-- VertexAlgorithms -->
     <algorithm type = "LArVertexSplitting">
         <InputClusterListNames>ClustersU ClustersV ClustersW</InputClusterListNames>
