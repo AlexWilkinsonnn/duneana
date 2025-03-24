@@ -1,12 +1,14 @@
 #!/bin/bash
 ################################################################################
-# Script to run the vertex bias analysis module over a bunch of files from the
+# Script to run pandora reco1 fcl with vertex monitoring turned on over the
 # atmospheric neutrino rucio dataset
 ################################################################################
 # Options
 
 RUCIO_CONTAINER="fardet-hd:fardet-hd-reco2_ritm2032831_atmnu_skip0_limit10000_2073"
 OUTPUT_DIR="/pnfs/dune/scratch/users/awilkins/atms_vtx_bias/root_outputs"
+# RECO1_FCL="standard_pandoravtxmonitoring_atmos_dune10kt_1x2x6.fcl"
+RECO1_FCL="standard_pandoramanyvtxmonitoring_atmos_dune10kt_1x2x6.fcl"
 
 ################################################################################
 
@@ -38,7 +40,7 @@ fi
 echo "input_file is ${input_fname}"
 echo "Accessing it with ${input_root_path}"
 
-lar -c standard_pandoravtxmonitoring_atmos_dune10kt_1x2x6.fcl -s $input_root_path -n -1
+lar -c $RECO1_FCL -s $input_root_path -n -1
 
 ls -lrth
 
