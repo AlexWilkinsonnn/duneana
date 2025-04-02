@@ -7,8 +7,9 @@
 
 RUCIO_CONTAINER="fardet-hd:fardet-hd-reco2_ritm2032831_atmnu_skip0_limit10000_2073"
 OUTPUT_DIR="/pnfs/dune/scratch/users/awilkins/atms_vtx_bias/root_outputs"
-# RECO1_FCL="standard_pandoravtxmonitoring_atmos_dune10kt_1x2x6.fcl"
-RECO1_FCL="standard_pandoramanyvtxmonitoring_atmos_dune10kt_1x2x6.fcl"
+RECO2_FCL="standard_pandoravtxmonitoring_atmos_dune10kt_1x2x6.fcl"
+# RECO2_FCL="standard_pandoramanyvtxmonitoring_atmos_dune10kt_1x2x6.fcl"
+JOB_FNAMES_REL_PATH="/srcs/duneana/scripts/jobs/job_fnames.txt"
 
 ################################################################################
 
@@ -19,7 +20,16 @@ echo "I am $USER"
 ${INPUT_TAR_DIR_LOCAL}/srcs/duneana/scripts/jobs/make_setup_grid.sh ${INPUT_TAR_DIR_LOCAL}/localProducts_larsoft_*/setup \
                                                                     setup-grid
 
+input_root_path=$(cat ${INPUT_TAR_DIR_LOCAL}/${JOB_FNAMES_REL_PATH} | head -n $((PROCESS+1)) | tail -n -1)
+
+# only the very newest shiniest xrootd works with tokens... wtf. Solution is a wasteful copy which will only work with the shiniest ifdhc...
+source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh
+setup ifdhc v2_8_0
+ifdh cp -D ${input_root_path} .
+input_name=$(basename $input_root_path)
 ls -lrth
+unsetup_all
+echo "Input file is ${input_name} from ${input_root_path}"
 
 source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh
 source setup-grid
@@ -30,17 +40,22 @@ export IFDH_CP_UNLINK_ON_ERROR=1
 export IFDH_CP_MAXRETRIES=1
 export IFDH_DEBUG=0
 
-setup rucio
-input_fname=$(rucio -a awilkins list-files --csv $RUCIO_CONTAINER | head -n $((PROCESS+1)) | tail -n -1 | sed "s/,.*//")
-input_root_path=$(rucio -a awilkins list-file-replicas --protocols root --pfns $input_fname | grep -v "tape_backed" | head -n 1)
-if [ -z "$input_root_path" ];
-then
-  echo "No staged file anywhere for $input_fname"
-fi
-echo "input_file is ${input_fname}"
-echo "Accessing it with ${input_root_path}"
+# jobsub stopped using proxies + rucio doesnt accept tokens -> using justinreadonly only work interactively -> this does not work
+# Solution is to wait for rucio to work with proxies and use the caveman 'make_filelist.sh' approach for now.
+# setup rucio
+# setup justin
+# justin -v get-token
+# input_fname=$(rucio -a justinreadonly list-files --csv $RUCIO_CONTAINER | head -n $((PROCESS+1)) | tail -n -1 | sed "s/,.*//")
+# input_root_path=$(rucio -a justinreadonly list-file-replicas --protocols root --pfns $input_fname | grep -v "tape_backed" | head -n 1)
 
-lar -c $RECO1_FCL -s $input_root_path -n -1
+# if [ -z "$input_root_path" ];
+# then
+#   echo "No staged file anywhere for $input_fname"
+# fi
+# echo "input_file is ${input_fname}"
+# echo "Accessing it with ${input_root_path}"
+
+lar -c $RECO2_FCL -s $input_name -n -1
 
 ls -lrth
 
