@@ -13,6 +13,10 @@ JOB_FNAMES_REL_PATH="/srcs/duneana/scripts/jobs/job_fnames.txt"
 
 ################################################################################
 
+# Don't try over and over again to copy a file when it isn't going to work
+export IFDH_CP_UNLINK_ON_ERROR=1
+export IFDH_CP_MAXRETRIES=1
+
 echo "Running on $(hostname) at ${GLIDEIN_Site}. GLIDEIN_DUNESite = ${GLIDEIN_DUNESite}. At ${PWD}"
 echo "I am $USER"
 
@@ -34,11 +38,6 @@ echo "Input file is ${input_name} from ${input_root_path}"
 source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh
 source setup-grid
 mrbslp
-
-# Don't try over and over again to copy a file when it isn't going to work
-export IFDH_CP_UNLINK_ON_ERROR=1
-export IFDH_CP_MAXRETRIES=1
-export IFDH_DEBUG=0
 
 # jobsub stopped using proxies + rucio doesnt accept tokens -> using justinreadonly only work interactively -> this does not work
 # Solution is to wait for rucio to work with proxies and use the caveman 'make_filelist.sh' approach for now.

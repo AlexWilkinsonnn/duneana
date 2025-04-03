@@ -6,7 +6,7 @@
 # Options
 
 RUCIO_CONTAINER="fardet-hd:fardet-hd-reco2_ritm2032831_atmnu_skip0_limit10000_2073"
-N=5000
+N=10000
 
 ################################################################################
 
@@ -25,6 +25,9 @@ fi
 
 for fname in $(rucio -a justinreadonly list-files --csv $RUCIO_CONTAINER | head -n $N | sed "s/,.*//")
 do
-  root_path=$(rucio -a justinreadonly list-file-replicas --protocols root --pfns $fname | grep -v "tape_backed" | head -n 1)
-  echo $root_path >> job_fnames.txt
+  root_path=$(rucio -a justinreadonly list-file-replicas --protocols root --pfns $fname | grep -v "tape_backed" | grep -v "golias100.farm.particle.cz" | grep -e "echo.stfc" -e "in2p3" | head -n 1)
+  if [ ! -z "$root_path" ];
+  then
+    echo $root_path >> job_fnames.txt
+  fi
 done
